@@ -25,9 +25,9 @@ namespace GestionarPracticasLSC
             string codigo = txtCodigoMateria.Text;
             string descripcion = txtDescripcionMateria.Text;
             Console.WriteLine($"Datos de materia: Nombre={nombre}, Código={codigo}, Descripción={descripcion}");
-
             CN_Materias cnMaterias = new CN_Materias();
             cnMaterias.AgregarMateria(nombre, codigo, descripcion);
+            LoadMaterias();
         }
 
         private void btnAgregarPractica_Click(object sender, EventArgs e)
@@ -51,12 +51,12 @@ namespace GestionarPracticasLSC
             int idMateria = int.Parse(cmbMateriaPractica.SelectedValue.ToString());
 
             Console.WriteLine($"Datos de práctica: Nombre={nombre}, Fecha={fecha}, Objetivo={objetivo}, Procedimientos={procedimientos}, Materiales={materiales}, IdMateria={idMateria}");
-
             CN_Practicas cnPracticas = new CN_Practicas();
             try
             {
                 cnPracticas.AgregarPractica(nombre, fecha, objetivo, procedimientos, materiales, idMateria);
                 MessageBox.Show("Práctica agregada exitosamente");
+                LoadPracticas();
             }
             catch (Exception ex)
             {
@@ -83,19 +83,19 @@ namespace GestionarPracticasLSC
             string objetivo = txtObjetivoPracticaModificar.Text;
             string procedimientos = txtProcedimientosPracticaModificar.Text;
             string materiales = txtMaterialesPracticaModificar.Text;
-            int idMateria = (int)cmbMateriaPracticaModificar.SelectedValue;
+            int idMateria = int.Parse(cmbMateriaPracticaModificar.SelectedValue.ToString());
             CN_Practicas cnPracticas = new CN_Practicas();
             try
             {
                 cnPracticas.ModificarPractica(idPractica, nombre, fecha, objetivo, procedimientos, materiales, idMateria);
                 MessageBox.Show("Práctica modificada con éxito.");
                 LoadPracticas();
+                LoadPracticasModificar();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
-
         }
 
         private void btnEliminarPractica_Click(object sender, EventArgs e)
@@ -107,6 +107,7 @@ namespace GestionarPracticasLSC
                 cnPracticas.EliminarPractica(idPractica);
                 MessageBox.Show("Práctica eliminada con éxito.");
                 LoadPracticas();
+                LoadPracticasEliminar();
             }
             catch (Exception ex)
             {
@@ -116,10 +117,7 @@ namespace GestionarPracticasLSC
 
         private void cmbMateriaPracticaEliminar_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int idMateria = (int)cmbMateriaPracticaEliminar.SelectedValue;
-            CN_Practicas cnPracticas = new CN_Practicas();
-            DataTable practicas = cnPracticas.MostrarPracticasPorMateria(idMateria);
-            dgvPracticasEliminar.DataSource = practicas;
+            LoadPracticasEliminar();
         }
 
         private void LoadMaterias()
@@ -134,6 +132,10 @@ namespace GestionarPracticasLSC
             cmbMateriaPracticaEliminar.DisplayMember = "Nombremat";
             cmbMateriaPracticaEliminar.ValueMember = "ID_Materia";
 
+            cmbMateriaPracticaModificar.DataSource = materias;
+            cmbMateriaPracticaModificar.DisplayMember = "Nombremat";
+            cmbMateriaPracticaModificar.ValueMember = "ID_Materia";
+
             dgvMaterias.DataSource = materias;
         }
 
@@ -145,13 +147,45 @@ namespace GestionarPracticasLSC
             dgvPracticas.DataSource = practicas;
         }
 
+        private void LoadPracticasModificar()
+        {
+            CN_Practicas cnPracticas = new CN_Practicas();
+            if (cmbMateriaPracticaModificar.SelectedValue != null)
+            {
+                int idMateria;
+                if (int.TryParse(cmbMateriaPracticaModificar.SelectedValue.ToString(), out idMateria))
+                {
+                    DataTable practicas = cnPracticas.MostrarPracticasPorMateria(idMateria);
+                    dgvPracticasModificar.DataSource = practicas;
+                }
+                else
+                {
+                    Console.WriteLine("No se pudo convertir el valor seleccionado a entero.");
+                }
+            }
+        }
+
+        private void LoadPracticasEliminar()
+        {
+            CN_Practicas cnPracticas = new CN_Practicas();
+            if (cmbMateriaPracticaEliminar.SelectedValue != null)
+            {
+                int idMateria;
+                if (int.TryParse(cmbMateriaPracticaEliminar.SelectedValue.ToString(), out idMateria))
+                {
+                    DataTable practicas = cnPracticas.MostrarPracticasPorMateria(idMateria);
+                    dgvPracticasEliminar.DataSource = practicas;
+                }
+                else
+                {
+                    Console.WriteLine("No se pudo convertir el valor seleccionado a entero.");
+                }
+            }
+        }
+
         private void cmbMateriaPracticaModificar_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Cargar todas las materias en el ComboBox
-            DataTable materias = cnMaterias.MostrarMaterias();
-            cmbMateriaPracticaModificar.DataSource = materias;
-            cmbMateriaPracticaModificar.DisplayMember = "Nombremat";
-            cmbMateriaPracticaModificar.ValueMember = "ID_Materia";
+            LoadPracticasModificar();
         }
     }
 }
