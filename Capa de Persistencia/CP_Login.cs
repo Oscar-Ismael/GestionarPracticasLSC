@@ -11,27 +11,43 @@ namespace Capa_de_Persistencia
         {
             using (SqlConnection conn = conexion.AbrirConexion())
             {
-                SqlCommand comando = new SqlCommand();
-                comando.Connection = conn;
-
-                if (tipoUsuario == "Profesor")
+                try
                 {
-                    comando.CommandText = @"SELECT COUNT(1) FROM Profesores 
-                                            WHERE CorreoElectronico = @CorreoElectronico AND Contrasena = @Contrasena";
-                    comando.Parameters.AddWithValue("@CorreoElectronico", correoElectronico);
-                    comando.Parameters.AddWithValue("@Contrasena", contrasena);
-                }
-                else if (tipoUsuario == "Alumno")
-                {
-                    comando.CommandText = @"SELECT COUNT(1) FROM Alumnos 
-                                            WHERE CorreoElectronico = @CorreoElectronico AND NumeroMatricula = @Contrasena";
-                    comando.Parameters.AddWithValue("@CorreoElectronico", correoElectronico);
-                    comando.Parameters.AddWithValue("@Contrasena", contrasena); // Aquí 'contrasena' es la matrícula
-                }
+                    Console.WriteLine("Conexión abierta para el inicio de sesión.");
 
-                int count = Convert.ToInt32(comando.ExecuteScalar());
-                return count > 0;
+                    SqlCommand comando = new SqlCommand();
+                    comando.Connection = conn;
+
+                    if (tipoUsuario == "Profesor")
+                    {
+                        comando.CommandText = @"SELECT COUNT(1) FROM Profesores 
+                                                WHERE CorreoElectronico = @CorreoElectronico AND Contrasena = @Contrasena";
+                        comando.Parameters.AddWithValue("@CorreoElectronico", correoElectronico);
+                        comando.Parameters.AddWithValue("@Contrasena", contrasena);
+                    }
+                    else if (tipoUsuario == "Alumno")
+                    {
+                        comando.CommandText = @"SELECT COUNT(1) FROM Alumnos 
+                                                WHERE CorreoElectronico = @CorreoElectronico AND NumeroMatricula = @Contrasena";
+                        comando.Parameters.AddWithValue("@CorreoElectronico", correoElectronico);
+                        comando.Parameters.AddWithValue("@Contrasena", contrasena);
+                    }
+
+                    int count = Convert.ToInt32(comando.ExecuteScalar());
+                    return count > 0;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al ejecutar la consulta de inicio de sesión: " + ex.Message);
+                    throw;
+                }
+                finally
+                {
+                    conexion.CerrarConexion();
+                    Console.WriteLine("Conexión cerrada después del inicio de sesión.");
+                }
             }
         }
     }
 }
+

@@ -5,16 +5,16 @@ namespace Capa_de_Negocio
 {
     public class CN_Materias
     {
-        private readonly CP_Materias objetoCP = new CP_Materias();
+        private CP_Materias cpMaterias = new CP_Materias();
 
         public void AgregarMateria(string nombre, string codigo, string descripcion)
         {
-            objetoCP.AgregarMateria(nombre, codigo, descripcion);
+            cpMaterias.AgregarMateria(nombre, codigo, descripcion);
         }
 
         public DataTable MostrarMaterias()
         {
-            return objetoCP.MostrarMaterias();
+            return cpMaterias.MostrarMaterias();
         }
     }
 }

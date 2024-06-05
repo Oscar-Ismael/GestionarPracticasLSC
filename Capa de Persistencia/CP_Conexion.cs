@@ -6,12 +6,7 @@ namespace Capa_de_Persistencia
 {
     public class CP_Conexion
     {
-        private readonly SqlConnection Conexion;
-
-        public CP_Conexion()
-        {
-            Conexion = new SqlConnection("Server=DESKTOP-Q04OS5T;Database=GestiondepracticasLSC;Integrated Security=true;");
-        }
+        private SqlConnection Conexion = new SqlConnection("Server=DESKTOP-Q04OS5T;Database=GestiondepracticasLSC;Integrated Security=true;");
 
         public SqlConnection AbrirConexion()
         {
@@ -21,12 +16,13 @@ namespace Capa_de_Persistencia
                 {
                     Conexion.Open();
                 }
-                return Conexion;
             }
-            catch (SqlException e)
+            catch (SqlException ex)
             {
-                throw new Exception("No se pudo abrir la conexión con la base de datos.", e);
+                throw new Exception("Error al abrir la conexión: " + ex.Message);
             }
+
+            return Conexion;
         }
 
         public void CerrarConexion()
@@ -38,10 +34,11 @@ namespace Capa_de_Persistencia
                     Conexion.Close();
                 }
             }
-            catch (SqlException e)
+            catch (SqlException ex)
             {
-                throw new Exception("Error al cerrar la conexión con la base de datos.", e);
+                throw new Exception("Error al cerrar la conexión: " + ex.Message);
             }
         }
     }
+
 }

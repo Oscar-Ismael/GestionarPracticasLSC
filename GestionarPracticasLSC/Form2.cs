@@ -12,6 +12,7 @@ namespace GestionarPracticasLSC
 
         public Form2()
         {
+            Console.WriteLine("Inicializando Form2...");
             InitializeComponent();
             LoadMaterias();
             LoadPracticas();
@@ -19,17 +20,19 @@ namespace GestionarPracticasLSC
 
         private void btnAgregarMateria_Click(object sender, EventArgs e)
         {
+            Console.WriteLine("Botón Agregar Materia clicado.");
             string nombre = txtNombreMateria.Text;
             string codigo = txtCodigoMateria.Text;
             string descripcion = txtDescripcionMateria.Text;
+            Console.WriteLine($"Datos de materia: Nombre={nombre}, Código={codigo}, Descripción={descripcion}");
 
+            CN_Materias cnMaterias = new CN_Materias();
             cnMaterias.AgregarMateria(nombre, codigo, descripcion);
-            MessageBox.Show("Materia agregada con éxito.");
-            LoadMaterias();
         }
 
         private void btnAgregarPractica_Click(object sender, EventArgs e)
         {
+            Console.WriteLine("Botón Agregar Práctica clicado.");
             string nombre = txtNombrePractica.Text;
             DateTime fecha = DateTime.Parse(txtFechaPractica.Text);
             string objetivo = txtObjetivoPractica.Text;
@@ -37,23 +40,61 @@ namespace GestionarPracticasLSC
             string materiales = txtMaterialesPractica.Text;
             int idMateria = (int)cmbMateriaPractica.SelectedValue;
 
+            Console.WriteLine($"Datos de práctica: Nombre={nombre}, Fecha={fecha}, Objetivo={objetivo}, Procedimientos={procedimientos}, Materiales={materiales}, IdMateria={idMateria}");
+
             cnPracticas.AgregarPractica(nombre, fecha, objetivo, procedimientos, materiales, idMateria);
             MessageBox.Show("Práctica agregada con éxito.");
             LoadPracticas();
         }
 
+        private void btnModificarPractica_Click(object sender, EventArgs e)
+        {
+            int idPractica = int.Parse(txtIDPracticaModificar.Text);
+            string nombre = txtNombrePracticaModificar.Text;
+            DateTime fecha = DateTime.Parse(txtFechaPracticaModificar.Text);
+            string objetivo = txtObjetivoPracticaModificar.Text;
+            string procedimientos = txtProcedimientosPracticaModificar.Text;
+            string materiales = txtMaterialesPracticaModificar.Text;
+            int idMateria = (int)cmbMateriaPracticaModificar.SelectedValue;
+
+            cnPracticas.ModificarPractica(idPractica, nombre, fecha, objetivo, procedimientos, materiales, idMateria);
+            MessageBox.Show("Práctica modificada con éxito.");
+            LoadPracticas();
+        }
+
+        private void btnEliminarPractica_Click(object sender, EventArgs e)
+        {
+            int idPractica = int.Parse(txtIDPractica.Text);
+            cnPracticas.EliminarPractica(idPractica);
+            MessageBox.Show("Práctica eliminada con éxito.");
+            LoadPracticas();
+        }
+
+        private void cmbMateriaPracticaEliminar_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int idMateria = (int)cmbMateriaPracticaEliminar.SelectedValue;
+            DataTable practicas = cnPracticas.MostrarPracticasPorMateria(idMateria);
+            dgvPracticasEliminar.DataSource = practicas;
+        }
+
         private void LoadMaterias()
         {
+            Console.WriteLine("Cargando materias...");
             DataTable materias = cnMaterias.MostrarMaterias();
             cmbMateriaPractica.DataSource = materias;
             cmbMateriaPractica.DisplayMember = "Nombremat";
             cmbMateriaPractica.ValueMember = "ID_Materia";
+
+            cmbMateriaPracticaEliminar.DataSource = materias;
+            cmbMateriaPracticaEliminar.DisplayMember = "Nombremat";
+            cmbMateriaPracticaEliminar.ValueMember = "ID_Materia";
 
             dgvMaterias.DataSource = materias;
         }
 
         private void LoadPracticas()
         {
+            Console.WriteLine("Cargando prácticas...");
             DataTable practicas = cnPracticas.MostrarPracticas();
             dgvPracticas.DataSource = practicas;
         }
