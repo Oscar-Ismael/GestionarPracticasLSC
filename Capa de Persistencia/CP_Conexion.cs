@@ -6,7 +6,12 @@ namespace Capa_de_Persistencia
 {
     public class CP_Conexion
     {
-        private SqlConnection Conexion = new SqlConnection("Server=DESKTOP-Q04OS5T;Database=GestiondepracticasLSC;Integrated Security=true;");
+        private SqlConnection Conexion;
+
+        public CP_Conexion()
+        {
+            Conexion = new SqlConnection("Server=DESKTOP-Q04OS5T;Database=GestiondepracticasLSC;Integrated Security=true;");
+        }
 
         public SqlConnection AbrirConexion()
         {
@@ -14,6 +19,7 @@ namespace Capa_de_Persistencia
             {
                 if (Conexion.State == ConnectionState.Closed)
                 {
+                    Console.WriteLine("Cadena de conexión: " + Conexion.ConnectionString);
                     Conexion.Open();
                 }
             }
@@ -40,5 +46,4 @@ namespace Capa_de_Persistencia
             }
         }
     }
-
 }

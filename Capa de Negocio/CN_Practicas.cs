@@ -15,8 +15,10 @@ namespace Capa_de_Negocio
 
         public void AgregarPractica(string nombre, DateTime fecha, string objetivo, string procedimientos, string materiales, int idMateria)
         {
+            Console.WriteLine("Llamando a AgregarPractica desde CN_Practicas"); // Mensaje de depuración
             cpPracticas.AgregarPractica(nombre, fecha, objetivo, procedimientos, materiales, idMateria);
         }
+
 
         public void ModificarPractica(int id, string nombre, DateTime fecha, string objetivo, string procedimientos, string materiales, int idMateria)
         {

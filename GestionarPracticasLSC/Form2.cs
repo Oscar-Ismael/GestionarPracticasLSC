@@ -32,19 +32,26 @@ namespace GestionarPracticasLSC
 
         private void btnAgregarPractica_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Botón Agregar Práctica clicado.");
+            Console.WriteLine("Botón Agregar Práctica clicado"); // Mensaje de depuración
             string nombre = txtNombrePractica.Text;
             DateTime fecha = DateTime.Parse(txtFechaPractica.Text);
             string objetivo = txtObjetivoPractica.Text;
             string procedimientos = txtProcedimientosPractica.Text;
             string materiales = txtMaterialesPractica.Text;
-            int idMateria = (int)cmbMateriaPractica.SelectedValue;
+            int idMateria = int.Parse(cmbMateriaPractica.SelectedValue.ToString());
 
-            Console.WriteLine($"Datos de práctica: Nombre={nombre}, Fecha={fecha}, Objetivo={objetivo}, Procedimientos={procedimientos}, Materiales={materiales}, IdMateria={idMateria}");
+            Console.WriteLine($"Datos de práctica: Nombre={nombre}, Fecha={fecha}, Objetivo={objetivo}, Procedimientos={procedimientos}, Materiales={materiales}, IdMateria={idMateria}"); // Mensaje de depuración
 
-            cnPracticas.AgregarPractica(nombre, fecha, objetivo, procedimientos, materiales, idMateria);
-            MessageBox.Show("Práctica agregada con éxito.");
-            LoadPracticas();
+            try
+            {
+                cnPracticas.AgregarPractica(nombre, fecha, objetivo, procedimientos, materiales, idMateria);
+                MessageBox.Show("Práctica agregada exitosamente");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message); // Mensaje de depuración
+                MessageBox.Show("Error: " + ex.Message);
+            }
         }
 
         private void btnModificarPractica_Click(object sender, EventArgs e)

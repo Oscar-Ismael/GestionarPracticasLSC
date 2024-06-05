@@ -7,6 +7,7 @@ namespace Capa_de_Persistencia
     public class CP_Practicas
     {
         private CP_Conexion conexion = new CP_Conexion();
+        private SqlCommand comando = new SqlCommand();
 
         public DataTable MostrarPracticas()
         {
@@ -18,30 +19,41 @@ namespace Capa_de_Persistencia
                 comando.CommandText = "SELECT * FROM PracticasLaboratorio";
                 SqlDataAdapter adapter = new SqlDataAdapter(comando);
                 adapter.Fill(dtPracticas);
+                conexion.CerrarConexion();
             }
             return dtPracticas;
         }
 
-        public void AgregarPractica(string nombre, DateTime fecha, string objetivo, string procedimientos, string materiales, int idMateria)
-        {
-            using (SqlConnection conn = conexion.AbrirConexion())
+            public void AgregarPractica(string nombre, DateTime fecha, string objetivo, string procedimientos, string materiales, int idMateria)
             {
-                SqlCommand comando = new SqlCommand();
-                comando.Connection = conn;
-                comando.CommandText = @"INSERT INTO PracticasLaboratorio (NombrePract, Fecha, Objetivo, Procedimientos, MaterialesNecesarios, ID_Materia) 
-                                        VALUES (@NombrePract, @Fecha, @Objetivo, @Procedimientos, @MaterialesNecesarios, @ID_Materia)";
-                comando.Parameters.AddWithValue("@NombrePract", nombre);
-                comando.Parameters.AddWithValue("@Fecha", fecha);
-                comando.Parameters.AddWithValue("@Objetivo", objetivo);
-                comando.Parameters.AddWithValue("@Procedimientos", procedimientos);
-                comando.Parameters.AddWithValue("@MaterialesNecesarios", materiales);
-                comando.Parameters.AddWithValue("@ID_Materia", idMateria);
-                comando.ExecuteNonQuery();
+                Console.WriteLine("Iniciando método AgregarPractica");
+                comando.Connection = conexion.AbrirConexion();
+                Console.WriteLine("Cadena de conexión: " + comando.Connection.ConnectionString);
+                comando.CommandText = "INSERT INTO PracticasLaboratorio (NombrePract, Fecha, Objetivo, Procedimientos, MaterialesNecesarios, ID_Materia) VALUES (@nombre, @fecha, @objetivo, @procedimientos, @materiales, @idMateria)";
+                comando.Parameters.AddWithValue("@nombre", nombre);
+                comando.Parameters.AddWithValue("@fecha", fecha);
+                comando.Parameters.AddWithValue("@objetivo", objetivo);
+                comando.Parameters.AddWithValue("@procedimientos", procedimientos);
+                comando.Parameters.AddWithValue("@materiales", materiales);
+                comando.Parameters.AddWithValue("@idMateria", idMateria);
+
+                try
+                {
+                    comando.ExecuteNonQuery();
+                    Console.WriteLine("Práctica agregada exitosamente");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al agregar la práctica: " + ex.Message);
+                    throw new Exception("Error al agregar la práctica: " + ex.Message);
+                }
+                finally
+                {
+                    conexion.CerrarConexion();
+                }
             }
-        }
 
-
-        public void ModificarPractica(int id, string nombre, DateTime fecha, string objetivo, string procedimientos, string materiales, int idMateria)
+            public void ModificarPractica(int id, string nombre, DateTime fecha, string objetivo, string procedimientos, string materiales, int idMateria)
         {
             using (SqlConnection conn = conexion.AbrirConexion())
             {
