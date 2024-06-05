@@ -19,7 +19,6 @@ namespace Capa_de_Persistencia
             {
                 if (Conexion.State == ConnectionState.Closed)
                 {
-                    Console.WriteLine("Cadena de conexión: " + Conexion.ConnectionString);
                     Conexion.Open();
                 }
             }

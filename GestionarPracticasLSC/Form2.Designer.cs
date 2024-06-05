@@ -9,7 +9,6 @@ namespace GestionarPracticasLSC
         // Controles para el formulario
         private System.Windows.Forms.Button btnAgregarMateria;
         private System.Windows.Forms.Button btnAgregarPractica;
-        private System.Windows.Forms.Button btnModificarPractica;
         private System.Windows.Forms.Button btnEliminarPractica;
         private System.Windows.Forms.ComboBox cmbMateriaPractica;
         private System.Windows.Forms.ComboBox cmbMateriaPracticaModificar;
@@ -80,7 +79,6 @@ namespace GestionarPracticasLSC
             this.dgvPracticas = new System.Windows.Forms.DataGridView();
             this.cmbMateriaPractica = new System.Windows.Forms.ComboBox();
             this.btnAgregarPractica = new System.Windows.Forms.Button();
-            this.btnModificarPractica = new System.Windows.Forms.Button();
             this.txtNombrePractica = new PlaceholderTextBox();
             this.txtFechaPractica = new PlaceholderTextBox();
             this.txtObjetivoPractica = new PlaceholderTextBox();
@@ -102,12 +100,13 @@ namespace GestionarPracticasLSC
             this.txtIDPracticaModificar = new PlaceholderTextBox();
             this.lblIDPracticaModificar = new System.Windows.Forms.Label();
             this.tabEliminarPractica = new System.Windows.Forms.TabPage();
+            this.lblmateriasEliminar = new System.Windows.Forms.Label();
+            this.lblIDdelapracticaEliminar = new System.Windows.Forms.Label();
             this.cmbMateriaPracticaEliminar = new System.Windows.Forms.ComboBox();
             this.dgvPracticasEliminar = new System.Windows.Forms.DataGridView();
             this.txtIDPractica = new PlaceholderTextBox();
             this.btnEliminarPractica = new System.Windows.Forms.Button();
-            this.lblIDdelapracticaEliminar = new System.Windows.Forms.Label();
-            this.lblmateriasEliminar = new System.Windows.Forms.Label();
+            this.btnModificarPractica = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.tabMaterias.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMaterias)).BeginInit();
@@ -235,7 +234,6 @@ namespace GestionarPracticasLSC
             this.tabPracticas.Controls.Add(this.dgvPracticas);
             this.tabPracticas.Controls.Add(this.cmbMateriaPractica);
             this.tabPracticas.Controls.Add(this.btnAgregarPractica);
-            this.tabPracticas.Controls.Add(this.btnModificarPractica);
             this.tabPracticas.Controls.Add(this.txtNombrePractica);
             this.tabPracticas.Controls.Add(this.txtFechaPractica);
             this.tabPracticas.Controls.Add(this.txtObjetivoPractica);
@@ -330,16 +328,6 @@ namespace GestionarPracticasLSC
             this.btnAgregarPractica.UseVisualStyleBackColor = true;
             this.btnAgregarPractica.Click += new System.EventHandler(this.btnAgregarPractica_Click);
             // 
-            // btnModificarPractica
-            // 
-            this.btnModificarPractica.Location = new System.Drawing.Point(20, 230);
-            this.btnModificarPractica.Name = "btnModificarPractica";
-            this.btnModificarPractica.Size = new System.Drawing.Size(200, 23);
-            this.btnModificarPractica.TabIndex = 11;
-            this.btnModificarPractica.Text = "Modificar Práctica";
-            this.btnModificarPractica.UseVisualStyleBackColor = true;
-            this.btnModificarPractica.Click += new System.EventHandler(this.btnModificarPractica_Click);
-            // 
             // txtNombrePractica
             // 
             this.txtNombrePractica.ForeColor = System.Drawing.Color.Gray;
@@ -392,6 +380,7 @@ namespace GestionarPracticasLSC
             // 
             // tabModificarPractica
             // 
+            this.tabModificarPractica.Controls.Add(this.btnModificarPractica);
             this.tabModificarPractica.Controls.Add(this.lbnombrepracticasModificar);
             this.tabModificarPractica.Controls.Add(this.lblfechadelaPracticaModificar);
             this.tabModificarPractica.Controls.Add(this.lblobjetivodelapracticaModificar);
@@ -467,6 +456,7 @@ namespace GestionarPracticasLSC
             this.cmbMateriaPracticaModificar.Name = "cmbMateriaPracticaModificar";
             this.cmbMateriaPracticaModificar.Size = new System.Drawing.Size(200, 21);
             this.cmbMateriaPracticaModificar.TabIndex = 9;
+            this.cmbMateriaPracticaModificar.SelectedIndexChanged += new System.EventHandler(this.cmbMateriaPracticaModificar_SelectedIndexChanged);
             // 
             // dgvPracticasModificar
             // 
@@ -561,6 +551,24 @@ namespace GestionarPracticasLSC
             this.tabEliminarPractica.Text = "Eliminar Práctica";
             this.tabEliminarPractica.UseVisualStyleBackColor = true;
             // 
+            // lblmateriasEliminar
+            // 
+            this.lblmateriasEliminar.AutoSize = true;
+            this.lblmateriasEliminar.Location = new System.Drawing.Point(17, 12);
+            this.lblmateriasEliminar.Name = "lblmateriasEliminar";
+            this.lblmateriasEliminar.Size = new System.Drawing.Size(47, 13);
+            this.lblmateriasEliminar.TabIndex = 15;
+            this.lblmateriasEliminar.Text = "Materias";
+            // 
+            // lblIDdelapracticaEliminar
+            // 
+            this.lblIDdelapracticaEliminar.AutoSize = true;
+            this.lblIDdelapracticaEliminar.Location = new System.Drawing.Point(17, 52);
+            this.lblIDdelapracticaEliminar.Name = "lblIDdelapracticaEliminar";
+            this.lblIDdelapracticaEliminar.Size = new System.Drawing.Size(86, 13);
+            this.lblIDdelapracticaEliminar.TabIndex = 14;
+            this.lblIDdelapracticaEliminar.Text = "ID de la Prácrica";
+            // 
             // cmbMateriaPracticaEliminar
             // 
             this.cmbMateriaPracticaEliminar.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -598,23 +606,15 @@ namespace GestionarPracticasLSC
             this.btnEliminarPractica.UseVisualStyleBackColor = true;
             this.btnEliminarPractica.Click += new System.EventHandler(this.btnEliminarPractica_Click);
             // 
-            // lblIDdelapracticaEliminar
+            // btnModificarPractica
             // 
-            this.lblIDdelapracticaEliminar.AutoSize = true;
-            this.lblIDdelapracticaEliminar.Location = new System.Drawing.Point(17, 52);
-            this.lblIDdelapracticaEliminar.Name = "lblIDdelapracticaEliminar";
-            this.lblIDdelapracticaEliminar.Size = new System.Drawing.Size(86, 13);
-            this.lblIDdelapracticaEliminar.TabIndex = 14;
-            this.lblIDdelapracticaEliminar.Text = "ID de la Prácrica";
-            // 
-            // lblmateriasEliminar
-            // 
-            this.lblmateriasEliminar.AutoSize = true;
-            this.lblmateriasEliminar.Location = new System.Drawing.Point(17, 12);
-            this.lblmateriasEliminar.Name = "lblmateriasEliminar";
-            this.lblmateriasEliminar.Size = new System.Drawing.Size(47, 13);
-            this.lblmateriasEliminar.TabIndex = 15;
-            this.lblmateriasEliminar.Text = "Materias";
+            this.btnModificarPractica.Location = new System.Drawing.Point(20, 283);
+            this.btnModificarPractica.Name = "btnModificarPractica";
+            this.btnModificarPractica.Size = new System.Drawing.Size(200, 23);
+            this.btnModificarPractica.TabIndex = 20;
+            this.btnModificarPractica.Text = "Modificar Práctica";
+            this.btnModificarPractica.UseVisualStyleBackColor = true;
+            this.btnModificarPractica.Click += new System.EventHandler(this.btnModificarPractica_Click);
             // 
             // Form2
             // 
@@ -648,5 +648,6 @@ namespace GestionarPracticasLSC
         private Label lblmaterialesnecesariosModificar;
         private Label lblmateriasEliminar;
         private Label lblIDdelapracticaEliminar;
+        private Button btnModificarPractica;
     }
 }

@@ -32,16 +32,27 @@ namespace GestionarPracticasLSC
 
         private void btnAgregarPractica_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Botón Agregar Práctica clicado"); // Mensaje de depuración
+            Console.WriteLine("Botón Agregar Práctica clicado");
             string nombre = txtNombrePractica.Text;
-            DateTime fecha = DateTime.Parse(txtFechaPractica.Text);
+            string fecha;
+            try
+            {
+                fecha = DateTime.ParseExact(txtFechaPractica.Text, "dd/MM/yyyy", null).ToString("yyyy-MM-dd"); // Convertimos a yyyy-MM-dd
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Formato de fecha incorrecto. Utiliza dd/MM/yyyy.");
+                return;
+            }
+
             string objetivo = txtObjetivoPractica.Text;
             string procedimientos = txtProcedimientosPractica.Text;
             string materiales = txtMaterialesPractica.Text;
             int idMateria = int.Parse(cmbMateriaPractica.SelectedValue.ToString());
 
-            Console.WriteLine($"Datos de práctica: Nombre={nombre}, Fecha={fecha}, Objetivo={objetivo}, Procedimientos={procedimientos}, Materiales={materiales}, IdMateria={idMateria}"); // Mensaje de depuración
+            Console.WriteLine($"Datos de práctica: Nombre={nombre}, Fecha={fecha}, Objetivo={objetivo}, Procedimientos={procedimientos}, Materiales={materiales}, IdMateria={idMateria}");
 
+            CN_Practicas cnPracticas = new CN_Practicas();
             try
             {
                 cnPracticas.AgregarPractica(nombre, fecha, objetivo, procedimientos, materiales, idMateria);
@@ -49,7 +60,7 @@ namespace GestionarPracticasLSC
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error: " + ex.Message); // Mensaje de depuración
+                Console.WriteLine("Error: " + ex.Message);
                 MessageBox.Show("Error: " + ex.Message);
             }
         }
@@ -58,28 +69,55 @@ namespace GestionarPracticasLSC
         {
             int idPractica = int.Parse(txtIDPracticaModificar.Text);
             string nombre = txtNombrePracticaModificar.Text;
-            DateTime fecha = DateTime.Parse(txtFechaPracticaModificar.Text);
+            string fecha;
+            try
+            {
+                fecha = DateTime.ParseExact(txtFechaPracticaModificar.Text, "dd/MM/yyyy", null).ToString("yyyy-MM-dd");
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show("Formato de fecha incorrecto. Utiliza dd/MM/yyyy.");
+                return;
+            }
+
             string objetivo = txtObjetivoPracticaModificar.Text;
             string procedimientos = txtProcedimientosPracticaModificar.Text;
             string materiales = txtMaterialesPracticaModificar.Text;
             int idMateria = (int)cmbMateriaPracticaModificar.SelectedValue;
+            CN_Practicas cnPracticas = new CN_Practicas();
+            try
+            {
+                cnPracticas.ModificarPractica(idPractica, nombre, fecha, objetivo, procedimientos, materiales, idMateria);
+                MessageBox.Show("Práctica modificada con éxito.");
+                LoadPracticas();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
 
-            cnPracticas.ModificarPractica(idPractica, nombre, fecha, objetivo, procedimientos, materiales, idMateria);
-            MessageBox.Show("Práctica modificada con éxito.");
-            LoadPracticas();
         }
 
         private void btnEliminarPractica_Click(object sender, EventArgs e)
         {
             int idPractica = int.Parse(txtIDPractica.Text);
-            cnPracticas.EliminarPractica(idPractica);
-            MessageBox.Show("Práctica eliminada con éxito.");
-            LoadPracticas();
+            CN_Practicas cnPracticas = new CN_Practicas();
+            try
+            {
+                cnPracticas.EliminarPractica(idPractica);
+                MessageBox.Show("Práctica eliminada con éxito.");
+                LoadPracticas();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
         }
 
         private void cmbMateriaPracticaEliminar_SelectedIndexChanged(object sender, EventArgs e)
         {
             int idMateria = (int)cmbMateriaPracticaEliminar.SelectedValue;
+            CN_Practicas cnPracticas = new CN_Practicas();
             DataTable practicas = cnPracticas.MostrarPracticasPorMateria(idMateria);
             dgvPracticasEliminar.DataSource = practicas;
         }
@@ -102,8 +140,18 @@ namespace GestionarPracticasLSC
         private void LoadPracticas()
         {
             Console.WriteLine("Cargando prácticas...");
+            CN_Practicas cnPracticas = new CN_Practicas();
             DataTable practicas = cnPracticas.MostrarPracticas();
             dgvPracticas.DataSource = practicas;
+        }
+
+        private void cmbMateriaPracticaModificar_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Cargar todas las materias en el ComboBox
+            DataTable materias = cnMaterias.MostrarMaterias();
+            cmbMateriaPracticaModificar.DataSource = materias;
+            cmbMateriaPracticaModificar.DisplayMember = "Nombremat";
+            cmbMateriaPracticaModificar.ValueMember = "ID_Materia";
         }
     }
 }

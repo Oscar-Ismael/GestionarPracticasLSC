@@ -13,14 +13,13 @@ namespace Capa_de_Negocio
             return cpPracticas.MostrarPracticas();
         }
 
-        public void AgregarPractica(string nombre, DateTime fecha, string objetivo, string procedimientos, string materiales, int idMateria)
+        public void AgregarPractica(string nombre, string fecha, string objetivo, string procedimientos, string materiales, int idMateria)
         {
-            Console.WriteLine("Llamando a AgregarPractica desde CN_Practicas"); // Mensaje de depuración
+            Console.WriteLine("Llamando a AgregarPractica desde CN_Practicas");
             cpPracticas.AgregarPractica(nombre, fecha, objetivo, procedimientos, materiales, idMateria);
         }
 
-
-        public void ModificarPractica(int id, string nombre, DateTime fecha, string objetivo, string procedimientos, string materiales, int idMateria)
+        public void ModificarPractica(int id, string nombre, string fecha, string objetivo, string procedimientos, string materiales, int idMateria)
         {
             cpPracticas.ModificarPractica(id, nombre, fecha, objetivo, procedimientos, materiales, idMateria);
         }
