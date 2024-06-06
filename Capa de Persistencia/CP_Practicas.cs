@@ -99,5 +99,57 @@ namespace Capa_de_Persistencia
             conexion.CerrarConexion();
             return dtPracticas;
         }
+        public void RegistrarEntrega(int practicaId, string correoAlumno)
+        {
+            using (SqlConnection conn = conexion.AbrirConexion())
+            {
+                try
+                {
+                    SqlCommand comando = new SqlCommand();
+                    comando.Connection = conn;
+                    comando.CommandText = @"INSERT INTO Entregas (ID_Practica, CorreoAlumno, FechaEntrega) 
+                                            VALUES (@ID_Practica, @CorreoAlumno, @FechaEntrega)";
+                    comando.Parameters.AddWithValue("@ID_Practica", practicaId);
+                    comando.Parameters.AddWithValue("@CorreoAlumno", correoAlumno);
+                    comando.Parameters.AddWithValue("@FechaEntrega", DateTime.Now);
+                    comando.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al registrar la entrega: " + ex.Message);
+                    throw new Exception("Error al registrar la entrega: " + ex.Message);
+                }
+                finally
+                {
+                    conexion.CerrarConexion();
+                }
+            }
+        }
+
+        public DataTable ObtenerPracticasPorMateria(int materiaId)
+        {
+            DataTable dtPracticas = new DataTable();
+            using (SqlConnection conn = conexion.AbrirConexion())
+            {
+                try
+                {
+                    SqlCommand comando = new SqlCommand();
+                    comando.Connection = conn;
+                    comando.CommandText = "SELECT * FROM PracticasLaboratorio WHERE ID_Materia = @MateriaId";
+                    comando.Parameters.AddWithValue("@MateriaId", materiaId);
+                    SqlDataAdapter adapter = new SqlDataAdapter(comando);
+                    adapter.Fill(dtPracticas);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error al obtener prácticas por materia: " + ex.Message);
+                }
+                finally
+                {
+                    conexion.CerrarConexion();
+                }
+            }
+            return dtPracticas;
+        }
     }
 }

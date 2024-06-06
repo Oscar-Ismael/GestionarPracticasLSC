@@ -56,5 +56,62 @@ namespace Capa_de_Persistencia
             }
             return dtMaterias;
         }
+
+        public DataTable ObtenerMateriasPorAlumno(int alumnoId)
+        {
+            DataTable dtMaterias = new DataTable();
+            using (SqlConnection conn = conexion.AbrirConexion())
+            {
+                try
+                {
+                    SqlCommand comando = new SqlCommand();
+                    comando.Connection = conn;
+                    comando.CommandText = "SELECT m.ID_Materia, m.Nombremat FROM Materias m " +
+                                          "INNER JOIN AlumnoPerteneceMateria apm ON m.ID_Materia = apm.ID_Materia " +
+                                          "WHERE apm.ID_Alumno = @AlumnoId";
+                    comando.Parameters.AddWithValue("@AlumnoId", alumnoId);
+                    SqlDataAdapter adapter = new SqlDataAdapter(comando);
+                    adapter.Fill(dtMaterias);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error al obtener materias por alumno: " + ex.Message);
+                }
+            }
+            return dtMaterias;
+        }
+
+
+        public DataTable ObtenerMateriasPorCorreo(string correoElectronico)
+        {
+            DataTable dtMaterias = new DataTable();
+            using (SqlConnection conn = conexion.AbrirConexion())
+            {
+                try
+                {
+                    SqlCommand comando = new SqlCommand();
+                    comando.Connection = conn;
+                    comando.CommandText = @"SELECT m.ID_Materia, m.Nombremat 
+                                    FROM Materias m 
+                                    INNER JOIN AlumnoPerteneceMateria apm ON m.ID_Materia = apm.ID_Materia 
+                                    INNER JOIN Alumnos a ON apm.ID_Alumno = a.ID_Alumno 
+                                    WHERE a.CorreoElectronico = @CorreoElectronico";
+                    comando.Parameters.AddWithValue("@CorreoElectronico", correoElectronico);
+                    SqlDataAdapter adapter = new SqlDataAdapter(comando);
+                    adapter.Fill(dtMaterias);
+                    Console.WriteLine("Datos obtenidos: " + dtMaterias.Rows.Count);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al obtener materias por correo del alumno: " + ex.Message);
+                    throw new Exception("Error al obtener materias por correo del alumno: " + ex.Message);
+                }
+            }
+            return dtMaterias;
+        }
+
+
+
+
     }
 }

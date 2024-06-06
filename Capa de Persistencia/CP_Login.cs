@@ -13,8 +13,6 @@ namespace Capa_de_Persistencia
             {
                 try
                 {
-                    Console.WriteLine("Conexión abierta para el inicio de sesión.");
-
                     SqlCommand comando = new SqlCommand();
                     comando.Connection = conn;
 
@@ -22,32 +20,60 @@ namespace Capa_de_Persistencia
                     {
                         comando.CommandText = @"SELECT COUNT(1) FROM Profesores 
                                                 WHERE CorreoElectronico = @CorreoElectronico AND Contrasena = @Contrasena";
-                        comando.Parameters.AddWithValue("@CorreoElectronico", correoElectronico);
-                        comando.Parameters.AddWithValue("@Contrasena", contrasena);
                     }
                     else if (tipoUsuario == "Alumno")
                     {
                         comando.CommandText = @"SELECT COUNT(1) FROM Alumnos 
                                                 WHERE CorreoElectronico = @CorreoElectronico AND NumeroMatricula = @Contrasena";
-                        comando.Parameters.AddWithValue("@CorreoElectronico", correoElectronico);
-                        comando.Parameters.AddWithValue("@Contrasena", contrasena);
                     }
+                    comando.Parameters.AddWithValue("@CorreoElectronico", correoElectronico);
+                    comando.Parameters.AddWithValue("@Contrasena", contrasena);
 
                     int count = Convert.ToInt32(comando.ExecuteScalar());
                     return count > 0;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Error al ejecutar la consulta de inicio de sesión: " + ex.Message);
-                    throw;
+                    throw new Exception("Error al ejecutar la consulta de inicio de sesión: " + ex.Message);
                 }
                 finally
                 {
                     conexion.CerrarConexion();
-                    Console.WriteLine("Conexión cerrada después del inicio de sesión.");
                 }
             }
         }
+
+        public int ObtenerIdAlumno(string correoElectronico)
+        {
+            using (SqlConnection conn = conexion.AbrirConexion())
+            {
+                try
+                {
+                    SqlCommand comando = new SqlCommand();
+                    comando.Connection = conn;
+                    comando.CommandText = @"SELECT ID_Alumno FROM Alumnos 
+                                    WHERE CorreoElectronico = @CorreoElectronico";
+                    comando.Parameters.AddWithValue("@CorreoElectronico", correoElectronico);
+                    Console.WriteLine($"Ejecutando consulta para obtener ID del alumno con correo: {correoElectronico}");
+
+                    int idAlumno = Convert.ToInt32(comando.ExecuteScalar());
+                    Console.WriteLine($"ID del alumno obtenido: {idAlumno}");
+                    return idAlumno;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al obtener ID del alumno: " + ex.Message);
+                    throw new Exception("Error al obtener ID del alumno: " + ex.Message);
+                }
+                finally
+                {
+                    conexion.CerrarConexion();
+                }
+            }
+        }
+
+
+
+
     }
 }
-

@@ -29,7 +29,6 @@ namespace GestionarPracticasLSC
                 if (esValido)
                 {
                     MessageBox.Show("Inicio de sesión exitoso.");
-                    // Abre el formulario correspondiente según el tipo de usuario
                     if (tipoUsuario == "Profesor")
                     {
                         Form2 formularioPrincipal = new Form2();
@@ -37,7 +36,7 @@ namespace GestionarPracticasLSC
                     }
                     else if (tipoUsuario == "Alumno")
                     {
-                        Form3 formularioAlumno = new Form3();
+                        Form3 formularioAlumno = new Form3(txtCorreo.Text);
                         formularioAlumno.Show();
                     }
                     this.Hide();
@@ -52,6 +51,8 @@ namespace GestionarPracticasLSC
                 MessageBox.Show("Error al intentar iniciar sesión: " + ex.Message);
             }
         }
+
+
 
 
 

@@ -33,5 +33,14 @@ namespace Capa_de_Negocio
         {
             return cpPracticas.MostrarPracticasPorMateria(idMateria);
         }
+
+        public void EntregarPractica(int practicaId, string correoAlumno)
+        {
+            cpPracticas.RegistrarEntrega(practicaId, correoAlumno);
+        }
+        public DataTable ObtenerPracticasPorMateria(int materiaId)
+        {
+            return cpPracticas.ObtenerPracticasPorMateria(materiaId);
+        }
     }
 }

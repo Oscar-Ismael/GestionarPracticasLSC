@@ -10,7 +10,8 @@ namespace Capa_de_Persistencia
 
         public CP_Conexion()
         {
-            Conexion = new SqlConnection("Server=DESKTOP-Q04OS5T;Database=GestiondepracticasLSC;Integrated Security=true;");
+            // Verifica que la cadena de conexión esté correcta y accesible.
+            Conexion = new SqlConnection("Server=DESKTOP-N1CI2EQ;Database=GestiondepracticasLSC;Integrated Security=true;");
         }
 
         public SqlConnection AbrirConexion()
@@ -45,4 +46,5 @@ namespace Capa_de_Persistencia
             }
         }
     }
+
 }

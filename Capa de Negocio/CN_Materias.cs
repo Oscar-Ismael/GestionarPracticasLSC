@@ -16,5 +16,14 @@ namespace Capa_de_Negocio
         {
             return cpMaterias.MostrarMaterias();
         }
+
+        public DataTable ObtenerMateriasPorAlumno(int alumnoId)
+        {
+            return cpMaterias.ObtenerMateriasPorAlumno(alumnoId);
+        }
+        public DataTable ObtenerMateriasPorCorreo(string correoElectronico)
+        {
+            return cpMaterias.ObtenerMateriasPorCorreo(correoElectronico);
+        }
     }
 }

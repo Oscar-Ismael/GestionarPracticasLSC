@@ -1,5 +1,4 @@
 ﻿using Capa_de_Persistencia;
-using System;
 
 namespace Capa_de_Negocio
 {
@@ -10,6 +9,11 @@ namespace Capa_de_Negocio
         public bool LoginUsuario(string correoElectronico, string contrasena, string tipoUsuario)
         {
             return objetoCP.Login(correoElectronico, contrasena, tipoUsuario);
+        }
+
+        public int ObtenerIdAlumno(string correoElectronico)
+        {
+            return objetoCP.ObtenerIdAlumno(correoElectronico);
         }
     }
 }
