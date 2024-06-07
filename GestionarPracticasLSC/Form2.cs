@@ -16,6 +16,7 @@ namespace GestionarPracticasLSC
             InitializeComponent();
             LoadMaterias();
             LoadPracticas();
+            LoadPracticasEliminar();
         }
 
         private void btnAgregarMateria_Click(object sender, EventArgs e)
@@ -186,6 +187,13 @@ namespace GestionarPracticasLSC
         private void cmbMateriaPracticaModificar_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadPracticasModificar();
+        }
+
+        private void btnRegresar_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Login loginForm = new Login();
+            loginForm.Show();
         }
     }
 }

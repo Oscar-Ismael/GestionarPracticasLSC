@@ -48,11 +48,9 @@ namespace GestionarPracticasLSC
         {
             if (cmbMaterias.SelectedValue != null)
             {
-                // Asegúrate de que SelectedValue es de tipo DataRowView
                 var selectedRowView = cmbMaterias.SelectedValue as DataRowView;
                 if (selectedRowView != null)
                 {
-                    // Obtén el valor correcto del campo deseado (por ejemplo, "ID_Materia")
                     int materiaId = Convert.ToInt32(selectedRowView["ID_Materia"]);
                     Console.WriteLine($"Materia seleccionada ID: {materiaId}");
                     LoadPracticas(materiaId);
